@@ -17,6 +17,11 @@ public class AuthenticationController {
     private final UserValidator userValidator;
     private final RegistrationService registrationService;
 
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
+
     @GetMapping("/registration")
     public String registrationPage(@ModelAttribute("user") User user) {
         return "registration";
