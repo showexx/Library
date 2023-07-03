@@ -14,11 +14,7 @@ public class Library {
     @Column(name = "library_id")
     private int libraryId;
 
-    @NotBlank(message = "Field cannot be empty")
     @Column(name = "owner_id")
     private int ownerId;
 
-    @NotBlank(message = "Field cannot be empty")
-    @Column(name = "book_id")
-    private int bookId;
 }

@@ -5,12 +5,12 @@
     <title>Registration</title>
 </head>
 <body>
-<form th:action="@{/api/v1/auth/login}" method="post">
+<form th:action="@{/auth/authorization}" method="post">
     Эл. почта: <input type="email" name="username"><br><br>
     Пароль: <input type="password" name="password"><br><br>
     <input type="hidden" name="_csrf" th:value="${_csrf.token}">
     <input type="submit" value="Вход"/>
 </form>
-<a href="/api/v1/auth/registration">Зарегистрироваться</a>
+<a href="/auth/registration">Зарегистрироваться</a>
 </body>
 </html>

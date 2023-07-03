@@ -5,14 +5,14 @@
     <title>Registration</title>
 </head>
 <body>
-<form th:method="POST" th:action="@{/api/v1/auth/registration}" th:object="${user}">
-    <label for="firstName">Имя: </label>
-    <input type="text" th:field="${user.firstName}" id="firstName"/>
-    <div style="color: red" th:if="${#fields.hasErrors('firstName')}" th:errors="${user.firstName}">First Name Error</div>
-    <br/>
+<form th:method="POST" th:action="@{/auth/registration}" th:object="${user}">
     <label for="lastName">Фамилия: </label>
     <input type="text" th:field="${user.lastName}" id="lastName"/>
     <div style="color: red" th:if="${#fields.hasErrors('lastName')}" th:errors="${user.lastName}">Last Name Error</div>
+    <br/>
+    <label for="firstName">Имя: </label>
+    <input type="text" th:field="${user.firstName}" id="firstName"/>
+    <div style="color: red" th:if="${#fields.hasErrors('firstName')}" th:errors="${user.firstName}">First Name Error</div>
     <br/>
     <label for="email">Почта: </label>
     <input type="email" th:field="${user.email}" id="email"/>

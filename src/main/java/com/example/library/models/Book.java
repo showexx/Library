@@ -23,17 +23,7 @@ public class Book {
     @Column(name = "author")
     private String author;
 
-    @NotBlank(message = "Field cannot be empty")
-    @Column(name = "shelf_id")
-    private int shelfId;
+    @Column(name = "library_id")
+    private int libraryId;
 
-    public Book() {
-    }
-
-    public Book(int bookId, String name, String author, int shelfId) {
-        this.bookId = bookId;
-        this.name = name;
-        this.author = author;
-        this.shelfId = shelfId;
-    }
 }

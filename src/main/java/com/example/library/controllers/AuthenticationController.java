@@ -11,15 +11,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/api/v1/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final UserValidator userValidator;
     private final RegistrationService registrationService;
 
-    @GetMapping("/login")
+    @GetMapping("/authorization")
     public String login() {
-        return "login";
+        return "authorization";
     }
 
     @GetMapping("/registration")
@@ -36,6 +36,6 @@ public class AuthenticationController {
         }
 
         registrationService.register(user);
-        return "redirect:/api/v1/auth/login";
+        return "redirect:/auth/authorization";
     }
 }
