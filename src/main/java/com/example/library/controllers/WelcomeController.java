@@ -1,14 +1,17 @@
 package com.example.library.controllers;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 public class WelcomeController {
+    @GetMapping("/welcome-private")
+    public String welcomePrivate() {
+        return "Welcome private";
+    }
 
-    @GetMapping("/")
-    public String welcome() {
-        return "welcome";
+    @GetMapping("/welcome-public")
+    public String welcomePublic() {
+        return "Welcome public";
     }
 }

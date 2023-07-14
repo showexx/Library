@@ -1,41 +1,31 @@
 package com.example.library.controllers;
 
-import com.example.library.models.User;
-import com.example.library.services.RegistrationService;
-import com.example.library.util.UserValidator;
+import com.example.library.dto.JwtRequestDTO;
+import com.example.library.dto.RegistrationPersonDTO;
+import com.example.library.services.AuthenticationService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
-@RequestMapping("/auth")
-@RequiredArgsConstructor
+@RestController
+@RequestMapping("/public/authentication")
 public class AuthenticationController {
-    private final UserValidator userValidator;
-    private final RegistrationService registrationService;
+    private final AuthenticationService authenticationService;
 
-    @GetMapping("/authorization")
-    public String login() {
-        return "authorization";
+    public AuthenticationController(AuthenticationService authenticationService) {
+        this.authenticationService = authenticationService;
     }
 
-    @GetMapping("/registration")
-    public String registrationPage(@ModelAttribute("user") User user) {
-        return "registration";
+    @PostMapping("/authorization")
+    public ResponseEntity<?> createAuthToken(@RequestBody JwtRequestDTO authRequest) {
+        return authenticationService.createAuthToken(authRequest);
     }
 
     @PostMapping("/registration")
-    public String performRegistration(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        userValidator.validate(user, bindingResult);
-
-        if(bindingResult.hasErrors()){
-            return "registration";
-        }
-
-        registrationService.register(user);
-        return "redirect:/auth/authorization";
+    public ResponseEntity<?> createNewUser(@RequestBody @Valid RegistrationPersonDTO registrationPersonDTO) {
+        return authenticationService.createNewUser(registrationPersonDTO);
     }
 }
