@@ -3,6 +3,9 @@ package com.example.library.dto;
 public class CreateLibraryDTO {
     private String name;
 
+    public CreateLibraryDTO() {
+    }
+
     public CreateLibraryDTO(String name) {
         this.name = name;
     }
