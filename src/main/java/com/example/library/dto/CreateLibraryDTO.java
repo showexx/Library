@@ -1,7 +1,11 @@
 package com.example.library.dto;
 
-public class LibraryDTO {
+public class CreateLibraryDTO {
     private String name;
+
+    public CreateLibraryDTO(String name) {
+        this.name = name;
+    }
 
     public String getName() {
         return name;

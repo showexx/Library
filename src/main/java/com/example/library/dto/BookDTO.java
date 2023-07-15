@@ -5,6 +5,12 @@ public class BookDTO {
     private String author;
     private int dateOfCreation;
 
+    public BookDTO(String name, String author, int dateOfCreation) {
+        this.name = name;
+        this.author = author;
+        this.dateOfCreation = dateOfCreation;
+    }
+
     public String getName() {
         return name;
     }

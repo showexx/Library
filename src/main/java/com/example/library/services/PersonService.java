@@ -3,7 +3,6 @@ package com.example.library.services;
 import com.example.library.dto.RegistrationPersonDTO;
 import com.example.library.models.Person;
 import com.example.library.repositories.PersonRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,23 +18,14 @@ import java.util.stream.Collectors;
 
 @Service
 public class PersonService implements UserDetailsService {
-    private PersonRepository personRepository;
-    private PasswordEncoder passwordEncoder;
-    private RoleService roleService;
+    private final PersonRepository personRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final RoleService roleService;
 
-    @Autowired
-    public void setUserRepository(PersonRepository personRepository) {
+    public PersonService(PersonRepository personRepository, PasswordEncoder passwordEncoder, RoleService roleService) {
         this.personRepository = personRepository;
-    }
-
-    @Autowired
-    public void setRoleService(RoleService roleService) {
-        this.roleService = roleService;
-    }
-
-    @Autowired
-    public void setPasswordEncoder(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
 
     public Optional<Person> findByEmail(String email) {
