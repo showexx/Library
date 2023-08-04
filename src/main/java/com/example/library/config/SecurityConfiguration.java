@@ -1,6 +1,8 @@
-package com.example.library.configurations;
+package com.example.library.config;
 
-import com.example.library.services.PersonService;
+import com.example.library.security.JwtRequestFilter;
+import com.example.library.service.PersonService;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,9 +20,10 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
-@Configuration
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
-public class SecurityConfigurations {
+@Data
+@Configuration
+public class SecurityConfiguration {
     private PersonService personService;
     private JwtRequestFilter jwtRequestFilter;
 

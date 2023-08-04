@@ -1,7 +1,7 @@
-package com.example.library.repositories;
+package com.example.library.repository;
 
-import com.example.library.models.Book;
-import com.example.library.models.Library;
+import com.example.library.model.Book;
+import com.example.library.model.Library;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

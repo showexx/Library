@@ -1,25 +1,22 @@
-package com.example.library.services;
+package com.example.library.service;
 
 import com.example.library.dto.CreateBookDTO;
-import com.example.library.models.Book;
-import com.example.library.models.Library;
-import com.example.library.models.Person;
-import com.example.library.repositories.BookRepository;
-import com.example.library.repositories.LibraryRepository;
-import com.example.library.repositories.PersonRepository;
+import com.example.library.model.Book;
+import com.example.library.model.Library;
+import com.example.library.model.Person;
+import com.example.library.repository.BookRepository;
+import com.example.library.repository.LibraryRepository;
+import com.example.library.repository.PersonRepository;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 
+
+@Data
 @Service
 public class BookService {
     private final BookRepository bookRepository;
     private final PersonRepository personRepository;
     private final LibraryRepository libraryRepository;
-
-    public BookService(BookRepository bookRepository, PersonRepository personRepository, LibraryRepository libraryRepository) {
-        this.bookRepository = bookRepository;
-        this.personRepository = personRepository;
-        this.libraryRepository = libraryRepository;
-    }
 
     public void createNewBook(String email,CreateBookDTO createBookDTO) {
         Person person = personRepository.findByEmail(email)

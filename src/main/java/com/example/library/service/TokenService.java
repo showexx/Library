@@ -1,9 +1,9 @@
-package com.example.library.services;
+package com.example.library.service;
 
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.SignatureException;
+import lombok.Data;
 import org.springframework.stereotype.Service;
 
+@Data
 @Service
 public class TokenService {
     public String extractTokenFromHeader(String authorizationHeader) {

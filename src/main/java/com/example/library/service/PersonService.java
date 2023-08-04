@@ -1,8 +1,9 @@
-package com.example.library.services;
+package com.example.library.service;
 
 import com.example.library.dto.RegistrationPersonDTO;
-import com.example.library.models.Person;
-import com.example.library.repositories.PersonRepository;
+import com.example.library.model.Person;
+import com.example.library.repository.PersonRepository;
+import lombok.Data;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,17 +17,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+
+@Data
 @Service
 public class PersonService implements UserDetailsService {
     private final PersonRepository personRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
-
-    public PersonService(PersonRepository personRepository, PasswordEncoder passwordEncoder, RoleService roleService) {
-        this.personRepository = personRepository;
-        this.passwordEncoder = passwordEncoder;
-        this.roleService = roleService;
-    }
 
     public Optional<Person> findByEmail(String email) {
         return personRepository.findByEmail(email);
