@@ -1,21 +1,16 @@
 package com.example.library.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 
 public class PersonDTO {
-    private int id;
     private String email;
+    private String password;
 
-    public PersonDTO() {
-    }
-
-    public PersonDTO(int id, String email) {
-        this.id = id;
+    public PersonDTO(String email, String password) {
         this.email = email;
+        this.password = password;
     }
 }

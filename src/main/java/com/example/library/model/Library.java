@@ -2,10 +2,13 @@ package com.example.library.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 
 @Table(name = "library")
-@Data
+@Getter
+@Setter
 @Entity
 public class Library {
     @Id
