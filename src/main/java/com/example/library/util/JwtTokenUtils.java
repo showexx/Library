@@ -4,7 +4,6 @@ import com.example.library.security.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -16,10 +15,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 
-@Data
 @Component
-public class JwtTokenUtil {
+public class JwtTokenUtils {
     private final JwtProperties jwtProperties;
+
+    public JwtTokenUtils(JwtProperties jwtProperties) {
+        this.jwtProperties = jwtProperties;
+    }
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();

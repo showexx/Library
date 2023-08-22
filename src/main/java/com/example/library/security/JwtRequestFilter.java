@@ -1,6 +1,7 @@
 package com.example.library.security;
 
-import com.example.library.util.JwtTokenUtil;
+import com.example.library.exception.ApplicationException;
+import com.example.library.util.JwtTokenUtils;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.SignatureException;
 import jakarta.servlet.FilterChain;
@@ -8,6 +9,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,10 +23,10 @@ import java.util.stream.Collectors;
 @Slf4j
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
-    private final JwtTokenUtil jwtTokenUtil;
+    private final JwtTokenUtils jwtTokenUtils;
 
-    public JwtRequestFilter(JwtTokenUtil jwtTokenUtil) {
-        this.jwtTokenUtil = jwtTokenUtil;
+    public JwtRequestFilter(JwtTokenUtils jwtTokenUtils) {
+        this.jwtTokenUtils = jwtTokenUtils;
     }
 
     @Override
@@ -35,18 +37,20 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
             try {
-                email = jwtTokenUtil.getEmail(jwt);
+                email = jwtTokenUtils.getEmail(jwt);
             } catch (ExpiredJwtException e) {
                 log.debug("Время жизни токена вышло");
+                throw new ApplicationException(HttpStatus.UNAUTHORIZED.value(), "Неверный токен");
             } catch (SignatureException e) {
                 log.debug("Подпись неправильная");
+                throw new ApplicationException(HttpStatus.UNAUTHORIZED.value(), "Неверный токен");
             }
         }
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     email,
                     null,
-                    jwtTokenUtil.getRoles(jwt).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
+                    jwtTokenUtils.getRoles(jwt).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
             );
             SecurityContextHolder.getContext().setAuthentication(token);
         }

@@ -1,21 +1,15 @@
 package com.example.library.exception;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Date;
-
-@Data
-public class ApplicationException {
-    private int status;
-    private String message;
-    private Date timestamp;
+@Getter
+@Setter
+public class ApplicationException extends RuntimeException {
+    private final int status;
 
     public ApplicationException(int status, String message) {
+        super(message);
         this.status = status;
-        this.message = message;
-        this.timestamp = new Date();
     }
 }

@@ -1,6 +1,6 @@
 package com.example.library.controller;
 
-import com.example.library.dto.PersonDTO;
+import com.example.library.dto.AuthorizationPersonDTO;
 import com.example.library.dto.RegistrationPersonDTO;
 import com.example.library.service.PersonService;
 import com.example.library.service.TokenService;
@@ -23,12 +23,13 @@ public class AuthenticationController {
     }
 
     @PostMapping("/authorization")
-    public ResponseEntity<?> createAuthToken(@RequestBody PersonDTO personDTO) {
-        return tokenService.createAuthToken(personDTO);
+    public ResponseEntity<?> createAuthToken(@RequestBody AuthorizationPersonDTO authorizationPersonDTO) {
+        return ResponseEntity.ok(tokenService.createAuthToken(authorizationPersonDTO));
     }
 
     @PostMapping("/registration")
     public ResponseEntity<?> createNewUser(@RequestBody @Valid RegistrationPersonDTO registrationPersonDTO) {
-        return personService.createNewUser(registrationPersonDTO);
+        personService.createNewUser(registrationPersonDTO);
+        return ResponseEntity.ok("Success");
     }
 }

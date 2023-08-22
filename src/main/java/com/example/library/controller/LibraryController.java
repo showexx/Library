@@ -1,12 +1,15 @@
 package com.example.library.controller;
 
-import com.example.library.dto.LibraryDto;
+import com.example.library.dto.LibraryDTO;
 import com.example.library.service.LibraryService;
 import com.example.library.service.TokenService;
-import com.example.library.util.JwtTokenUtil;
+import com.example.library.util.JwtTokenUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 
 @RequestMapping("/private/library")
@@ -14,19 +17,18 @@ import org.springframework.web.bind.annotation.*;
 public class LibraryController {
     private final LibraryService libraryService;
     private final TokenService tokenService;
-    private final JwtTokenUtil jwtTokenUtil;
+    private final JwtTokenUtils jwtTokenUtils;
 
-    public LibraryController(LibraryService libraryService, TokenService tokenService, JwtTokenUtil jwtTokenUtil) {
+    public LibraryController(LibraryService libraryService, TokenService tokenService, JwtTokenUtils jwtTokenUtils) {
         this.libraryService = libraryService;
         this.tokenService = tokenService;
-        this.jwtTokenUtil = jwtTokenUtil;
+        this.jwtTokenUtils = jwtTokenUtils;
     }
 
     @PostMapping("/new-library")
-    public ResponseEntity<?> createLibrary(HttpServletRequest request, @RequestBody LibraryDto libraryDto) {
+    public ResponseEntity<?> createLibrary(HttpServletRequest request, @RequestBody LibraryDTO libraryDto) {
         String token = tokenService.extractTokenFromHeader(request.getHeader("Authorization"));
-
-
-        return libraryService.createNewLibrary(jwtTokenUtil.getEmail(token), libraryDto);
+        libraryService.createNewLibrary(jwtTokenUtils.getEmail(token), libraryDto);
+        return ResponseEntity.ok("Success");
     }
 }

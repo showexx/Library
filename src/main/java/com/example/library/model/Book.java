@@ -1,7 +1,6 @@
 package com.example.library.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,7 +16,7 @@ public class Book {
     @Column(name = "id")
     private int id;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
 
     @Column(name = "author")

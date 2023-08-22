@@ -1,16 +1,17 @@
 package com.example.library.dto;
 
-import lombok.*;
+import com.example.library.model.Role;
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
-
 public class PersonDTO {
     private String email;
-    private String password;
+    private String role;
 
-    public PersonDTO(String email, String password) {
+    public PersonDTO(String email, String role) {
         this.email = email;
-        this.password = password;
+        this.role = role;
     }
 }
