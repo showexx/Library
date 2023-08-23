@@ -34,16 +34,12 @@ public class PersonService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final RoleService roleService;
     private final JwtTokenUtils jwtTokenUtils;
-    private final LibraryRepository libraryRepository;
-    private final BookRepository bookRepository;
 
-    public PersonService(PersonRepository personRepository, PasswordEncoder passwordEncoder, RoleService roleService, JwtTokenUtils jwtTokenUtils, LibraryRepository libraryRepository, BookRepository bookRepository) {
+    public PersonService(PersonRepository personRepository, PasswordEncoder passwordEncoder, RoleService roleService, JwtTokenUtils jwtTokenUtils) {
         this.personRepository = personRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleService = roleService;
         this.jwtTokenUtils = jwtTokenUtils;
-        this.libraryRepository = libraryRepository;
-        this.bookRepository = bookRepository;
     }
 
     public Optional<Person> findByEmail(String email) {
@@ -81,23 +77,5 @@ public class PersonService implements UserDetailsService {
         String email = jwtTokenUtils.getEmail(token);
         String roleName = roleService.getUserRole().getName();
         return new PersonDTO(email,roleName);
-    }
-
-    public List<LibraryDTO> getPersonLibraries(String token) {
-        String email = jwtTokenUtils.getEmail(token);
-        Person person = personRepository.findByEmail(email)
-                .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND.value(), "Пользователь не найден"));
-        List<Library> libraries = libraryRepository.findByPerson(person);
-
-
-        List<LibraryDTO> libraryDTOList = new ArrayList<>();
-        for (Library library : libraries) {
-            LibraryDTO libraryDTO = new LibraryDTO();
-            List<Book> books = bookRepository.findByLibrary(library);
-            libraryDTO.setName(library.getName());
-            libraryDTOList.add(libraryDTO);
-            libraryDTO.setBookCount(books.size());
-        }
-        return libraryDTOList;
     }
 }

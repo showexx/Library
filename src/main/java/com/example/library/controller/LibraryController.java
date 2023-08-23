@@ -25,7 +25,7 @@ public class LibraryController {
         this.jwtTokenUtils = jwtTokenUtils;
     }
 
-    @PostMapping("/new-library")
+    @PostMapping("/new")
     public ResponseEntity<?> createLibrary(HttpServletRequest request, @RequestBody LibraryDTO libraryDto) {
         String token = tokenService.extractTokenFromHeader(request.getHeader("Authorization"));
         libraryService.createNewLibrary(jwtTokenUtils.getEmail(token), libraryDto);

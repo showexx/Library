@@ -23,7 +23,7 @@ public class BookController {
         this.tokenService = tokenService;
     }
 
-    @PostMapping("/new-book")
+    @PostMapping("/new")
     public ResponseEntity<?> createBook(@RequestBody BookDTO bookDTO) {
         bookService.createNewBook(bookDTO);
         return ResponseEntity.ok("Success");
