@@ -6,10 +6,7 @@ import com.example.library.service.TokenService;
 import com.example.library.util.JwtTokenUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 @RequestMapping("/private/library")
@@ -29,6 +26,13 @@ public class LibraryController {
     public ResponseEntity<?> createLibrary(HttpServletRequest request, @RequestBody LibraryDTO libraryDto) {
         String token = tokenService.extractTokenFromHeader(request.getHeader("Authorization"));
         libraryService.createNewLibrary(jwtTokenUtils.getEmail(token), libraryDto);
+        return ResponseEntity.ok("Success");
+    }
+
+    @DeleteMapping("/{libraryName}")
+    public ResponseEntity<?> removeLibrary(HttpServletRequest request, @PathVariable String libraryName) {
+        String token = tokenService.extractTokenFromHeader(request.getHeader("Authorization"));
+        libraryService.removeLibrary(token, libraryName);
         return ResponseEntity.ok("Success");
     }
 }

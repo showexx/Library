@@ -1,14 +1,9 @@
 package com.example.library.service;
 
-import com.example.library.dto.LibraryDTO;
 import com.example.library.dto.PersonDTO;
 import com.example.library.dto.RegistrationPersonDTO;
 import com.example.library.exception.ApplicationException;
-import com.example.library.model.Book;
-import com.example.library.model.Library;
 import com.example.library.model.Person;
-import com.example.library.repository.BookRepository;
-import com.example.library.repository.LibraryRepository;
 import com.example.library.repository.PersonRepository;
 import com.example.library.util.JwtTokenUtils;
 import org.springframework.http.HttpStatus;
@@ -21,9 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -57,6 +50,11 @@ public class PersonService implements UserDetailsService {
                 .collect(Collectors.toList()));
     }
 
+    public Person findPersonByEmail(String email) {
+        return personRepository.findByEmail(email)
+                .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND.value(), "Пользователь не найден"));
+    }
+
     public void createNewUser(RegistrationPersonDTO registrationPersonDTO) {
         if (!registrationPersonDTO.getPassword().equals(registrationPersonDTO.getConfirmPassword())) {
             throw new ApplicationException(HttpStatus.BAD_REQUEST.value(), "Пароли не совпадают");
@@ -76,6 +74,6 @@ public class PersonService implements UserDetailsService {
     public PersonDTO getPersonInfo(String token) {
         String email = jwtTokenUtils.getEmail(token);
         String roleName = roleService.getUserRole().getName();
-        return new PersonDTO(email,roleName);
+        return new PersonDTO(email, roleName);
     }
 }

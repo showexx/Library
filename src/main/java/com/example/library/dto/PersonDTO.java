@@ -1,6 +1,5 @@
 package com.example.library.dto;
 
-import com.example.library.model.Role;
 import lombok.Getter;
 import lombok.Setter;
 

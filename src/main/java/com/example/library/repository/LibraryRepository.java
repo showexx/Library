@@ -11,5 +11,8 @@ import java.util.Optional;
 @Repository
 public interface LibraryRepository extends CrudRepository<Library, Integer> {
     Optional<Library> findByName(String name);
+
     List<Library> findByPerson(Person person);
+
+    Optional<Library> findByNameAndPerson(String name, Person person);
 }

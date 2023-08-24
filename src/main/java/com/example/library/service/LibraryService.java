@@ -23,18 +23,18 @@ public class LibraryService {
     private final PersonRepository personRepository;
     private final JwtTokenUtils jwtTokenUtils;
     private final BookRepository bookRepository;
+    private final PersonService personService;
 
-    public LibraryService(LibraryRepository libraryRepository, PersonRepository personRepository, JwtTokenUtils jwtTokenUtils, BookRepository bookRepository) {
+    public LibraryService(LibraryRepository libraryRepository, PersonRepository personRepository, JwtTokenUtils jwtTokenUtils, BookRepository bookRepository, PersonService personService) {
         this.libraryRepository = libraryRepository;
         this.personRepository = personRepository;
         this.jwtTokenUtils = jwtTokenUtils;
         this.bookRepository = bookRepository;
+        this.personService = personService;
     }
 
     public void createNewLibrary(String email, LibraryDTO libraryDto) {
-        Person person = personRepository.findByEmail(email)
-                .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND.value(), "Пользователь не найден"));
-
+        Person person = personService.findPersonByEmail(email);
         Optional<Library> existingLibrary = libraryRepository.findByName(libraryDto.getName());
         if (existingLibrary.isPresent()) {
             throw new ApplicationException(HttpStatus.CONFLICT.value(), "Библиотека с таким именем уже существует");
@@ -48,9 +48,12 @@ public class LibraryService {
 
     public List<LibraryDTO> getPersonLibraries(String token) {
         String email = jwtTokenUtils.getEmail(token);
-        Person person = personRepository.findByEmail(email)
-                .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND.value(), "Пользователь не найден"));
+        Person person = personService.findPersonByEmail(email);
         List<Library> libraries = libraryRepository.findByPerson(person);
+
+        if(libraries.isEmpty()){
+            throw new ApplicationException(HttpStatus.NOT_FOUND.value(), "У пользователя не найдены библиотеки");
+        }
 
         List<LibraryDTO> libraryDTOList = new ArrayList<>();
         for (Library library : libraries) {
@@ -61,5 +64,22 @@ public class LibraryService {
             libraryDTO.setBookCount(books.size());
         }
         return libraryDTOList;
+    }
+
+    public void removeLibrary(String token, String libraryName) {
+        String email = jwtTokenUtils.getEmail(token);
+        Person person = personService.findPersonByEmail(email);
+        Library library = libraryRepository.findByNameAndPerson(libraryName, person)
+                .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND.value(), "У пользователя не найдены библиотеки"));
+
+        if (bookRepository.findByLibrary(library).isEmpty()) {
+            libraryRepository.delete(library);
+        } else {
+            List<Book> libraries = bookRepository.findByLibrary(library);
+            for (Book book : libraries) {
+                bookRepository.delete(book);
+            }
+            libraryRepository.delete(library);
+        }
     }
 }
